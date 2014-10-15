@@ -31,5 +31,3 @@ lineReader.eachLine(fileName, function(line, last) {
 	console.log();
     }
 });
-
-
