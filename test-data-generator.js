@@ -1,5 +1,4 @@
 var lineReader = require('line-reader');
-var _ = require('underscore');
 
 var firstLine = true;
 var header = null;

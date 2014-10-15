@@ -1,0 +1,16 @@
+{
+  "name": "test-data-generator",
+  "version": "1.0.0",
+  "description": "generate c# class instances from csv",
+  "main": "test-data-generator.js",
+  "dependencies": {
+    "line-reader": "^0.2.4",
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Sims",
+  "license": "Public domain"
+}
