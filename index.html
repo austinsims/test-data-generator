@@ -31,6 +31,8 @@ $(document).ready(function() {
 			if (radioValue == 'var') declaration = 'var';
 			else if (radioValue == 'field') declaration = 'private readonly ' + className + '[]';
 
+		    var arrayIndices = $("input:checkbox[name='arrayIndices']").is(':checked');
+
 			var lines = $('#input').val().split('\n');
 			var header = null;
 	
@@ -44,6 +46,11 @@ $(document).ready(function() {
 					if (cells.length == 1 && cells[0] == '') continue;
 					if (i > 1)
 						output += ',\n\n';
+
+				    if (arrayIndices)
+				        output += '   ' +
+				            ' // ' + String(i-1) + '\n';
+
 					output += '    new ' + className + '() {\n';
 					for (var j=0; j < header.length; j++) {
 						var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
@@ -112,6 +119,11 @@ label {
 		<input type="radio" name="declaration" value="field">
 		<label>Private readonly field</label>
 	</p>
+    
+    <p>
+        Add comments with array indices:
+        <input type="checkbox" name="arrayIndices"/>
+    </p>
 </div>
 
 
