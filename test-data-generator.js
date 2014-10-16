@@ -15,8 +15,6 @@ function formatData(data) {
     else return '"' + data + '"';
 }
 
-
-
 lineReader.eachLine(fileName, function(line, last) {
     if (firstLine) {
 	header = line.replace('\n','').split(',');

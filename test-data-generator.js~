@@ -1,6 +1,0 @@
-var lineReader = require('line-reader');
-
-lineReader.eachLine('file.txt', function(line, last) {
-    console.log(line);
-    
-});
