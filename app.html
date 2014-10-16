@@ -36,16 +36,18 @@ $(document).ready(function() {
 				else {
 					var cells = lines[i].split(',');
 					if (cells.length == 1 && cells[0] == '') continue;
+					if (i > 1)
+						output += ',\n\n';
 					output += '    new ' + className + '() {\n';
 					for (var j=0; j < header.length; j++) {
 						var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
 						output += '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
 					}
-					output += '    }' + (i == lines.length-1 ? '' : ',') + '\n\n';
+					output += '    }';
 				}
 			}
 	
-			output += '};';
+			output += '\n};';
 		}
 
 		$('#output').val(output);
