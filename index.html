@@ -25,10 +25,16 @@ $(document).ready(function() {
 			output = 'Please fill out class name below'	
 		else {
 			var arrVarName = 'sample' + className + 's';
+
+			var declaration = null;
+			var radioValue = $("input:radio[name='declaration']:checked").val();
+			if (radioValue == 'var') declaration = 'var';
+			else if (radioValue == 'field') declaration = 'private readonly ' + className + '[]';
+
 			var lines = $('#input').val().split('\n');
 			var header = null;
 	
-			output += 'var ' + arrVarName + ' = new[] {\n';
+			output += declaration + ' ' + arrVarName + ' = new[] {\n';
 	
 			for (var i = 0; i < lines.length; i++) {
 				if (i == 0)
@@ -53,8 +59,7 @@ $(document).ready(function() {
 		$('#output').val(output);
 	}
 
-	$('#input').on('input propertychange', handle);
-	$('#className').on('input propertychange', handle);
+	$('textarea, input, :radio').on('input propertychange click', handle);
 	$('#output').on('click', function(e) { $(e.target).select(); });
 });
 </script>
@@ -95,8 +100,18 @@ label {
 <textarea id="output"></textarea>
 
 <div id="controls">
-	<label>Class Name</label>
-	<input id="className" type="text"></input>
+	<p>
+		<label>Class Name</label>
+		<input id="className" type="text"></input>
+	</p>
+
+	<p>
+		Declaration type:
+		<input type="radio" name="declaration" value="var" checked>
+		<label>Local variable</label>
+		<input type="radio" name="declaration" value="field">
+		<label>Private readonly field</label>
+	</p>
 </div>
 
 
