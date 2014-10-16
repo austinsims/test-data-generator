@@ -1,6 +1,6 @@
 # test-data-generator
 
-A simple in-browser app to convert CSV data to an array of C# class instances.  Useful for generating code for unit tests. Will produce syntactically correct literals for C# data types including bool, int, float, DateTime, and string.  Additionally, any empty cells in the CSV data imply nulls in the object initializers.
+A simple in-browser app to convert CSV data to an array of C# class instances.  Useful for generating code for unit tests. Will produce syntactically correct literals for C# data types including bool, int, float, DateTime, and string.  Additionally, any empty cells in the CSV data imply nulls in the object initializers. [Give it a try!](http://austinsims.github.io/test-data-generator)
 
 Input:
 ```
