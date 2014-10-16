@@ -1,1 +1,106 @@
-Hello  World
+<!doctype html>
+
+<head>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	
+	function format(data) {
+		function isDate(val) {
+		    var d = new Date(val);
+		    return !isNaN(d.valueOf());
+		}
+
+		if (data == "null" || data == "true" || data == "false" || Number(data)) return data;
+		else if (isDate(data)) return 'new DateTime("' + data + '")';
+		else return '"' + data + '"';
+	}
+
+	function handle(e) {
+		var className = $("#className").val();
+		var output = '';
+
+		if (!className)
+			output = 'Please fill out class name below'	
+		else {
+			var arrVarName = 'sample' + className + 's';
+			var lines = $('#input').val().split('\n');
+			var header = null;
+	
+			output += 'var ' + arrVarName + ' = new[] {\n';
+	
+			for (var i = 0; i < lines.length; i++) {
+				if (i == 0)
+					header = lines[i].split(',');
+				else {
+					var cells = lines[i].split(',');
+					if (cells.length == 1 && cells[0] == '') continue;
+					if (i > 1)
+						output += ',\n\n';
+					output += '    new ' + className + '() {\n';
+					for (var j=0; j < header.length; j++) {
+						var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
+						output += '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
+					}
+					output += '    }';
+				}
+			}
+	
+			output += '\n};';
+		}
+
+		$('#output').val(output);
+	}
+
+	$('#input').on('input propertychange', handle);
+	$('#className').on('input propertychange', handle);
+	$('arrVarName').on('input propertychange', handle);
+	$('#output').on('click', function(e) { $(e.target).select(); });
+});
+</script>
+
+<style>
+textarea {
+    width: 49%;
+    display: inline-block;
+    height: 80vh;
+}
+
+body {
+    height: 100%;
+}
+
+#input {
+    float:left;
+}
+
+#output {
+    float:right;
+}
+
+input {
+	display: inline-block;
+	clear: right;
+}
+
+label {
+	display: inline-block;
+	clear: left;
+}
+</style>
+</head>
+<body>
+
+<textarea id="input"></textarea>
+<textarea id="output"></textarea>
+
+<div id="controls">
+	<label>Class Name</label>
+	<input id="className" type="text"></input>
+</div>
+
+
+</body>
+
+      
