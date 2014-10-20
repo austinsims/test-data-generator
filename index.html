@@ -13,7 +13,7 @@ $(document).ready(function() {
 		}
 
 		if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
-		else if (isDate(data)) return 'new DateTime("' + data + '")';
+		else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
 		else return '"' + data + '"';
 	}
 
