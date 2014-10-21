@@ -18,6 +18,7 @@ $(document).ready(function() {
 	}
 
 	function handle(e) {
+		var delim = $("#delim").val();
 		var className = $("#className").val();
 		var output = '';
 
@@ -40,9 +41,9 @@ $(document).ready(function() {
 	
 			for (var i = 0; i < lines.length; i++) {
 				if (i == 0)
-					header = lines[i].split(',');
+					header = lines[i].split(delim);
 				else {
-					var cells = lines[i].split(',');
+					var cells = lines[i].split(delim);
 					if (cells.length == 1 && cells[0] == '') continue;
 					if (i > 1)
 						output += ',\n\n';
@@ -66,7 +67,7 @@ $(document).ready(function() {
 		$('#output').val(output);
 	}
 
-	$('textarea, input, :radio').on('input propertychange click', handle);
+	$('textarea, input, :radio, select').on('input propertychange click', handle);
 	$('#output').on('click', function(e) { $(e.target).select(); });
 });
 </script>
@@ -123,6 +124,14 @@ label {
     <p>
         Add comments with array indices:
         <input type="checkbox" name="arrayIndices"/>
+    </p>
+
+    <p>
+    	Field delimeter:
+	<select id="delim">
+		<option value=",">Comma</option>
+		<option value="	">Tab</option>
+	</select>
     </p>
 </div>
 
