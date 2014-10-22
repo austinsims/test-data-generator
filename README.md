@@ -18,7 +18,7 @@ var sampleCustomers = new[] {
         CustomerId = 123456,
         LastName = "Ortego",
         FirstName = null,
-        Birthday = new DateTime("1/2/14"),
+        Birthday = Convert.ToDateTime("1/2/14"),
         LikesCheese = true
     },
 
@@ -26,7 +26,7 @@ var sampleCustomers = new[] {
         CustomerId = 234234,
         LastName = "Carter",
         FirstName = "Sean",
-        Birthday = new DateTime("1/2/14"),
+        Birthday = Convert.ToDateTime("1/2/14"),
         LikesCheese = false
     },
 
@@ -34,7 +34,7 @@ var sampleCustomers = new[] {
         CustomerId = 311311,
         LastName = "Riley",
         FirstName = "Terry",
-        Birthday = new DateTime("1/2/14"),
+        Birthday = Convert.ToDateTime("1/2/14"),
         LikesCheese = null
     }
 };
