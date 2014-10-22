@@ -14,19 +14,23 @@ $(document).ready(function() {
 
 		if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
 		else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
+		else if ((data[0] == '"') && (data[data.length-1] == '"')) return data;
 		else return '"' + data + '"';
 	}
 
 	function handle(e) {
 		var delim = $("#delim").val();
 		var className = $("#className").val();
+		var arrVarName = $("#arrVarName").val() || ('sample' + className + 's');
+		var indentNum = Number($("#indent").val()) || 0;
+		var indent = '';
+		for (var i=0; i<indentNum; i++) indent += ' ';
+
 		var output = '';
 
 		if (!className)
 			output = 'Please fill out class name below'	
 		else {
-			var arrVarName = 'sample' + className + 's';
-
 			var declaration = null;
 			var radioValue = $("input:radio[name='declaration']:checked").val();
 			if (radioValue == 'var') declaration = 'var';
@@ -37,7 +41,7 @@ $(document).ready(function() {
 			var lines = $('#input').val().split('\n');
 			var header = null;
 	
-			output += declaration + ' ' + arrVarName + ' = new[] {\n';
+			output += indent +  declaration + ' ' + arrVarName + ' = new[] {\n';
 	
 			for (var i = 0; i < lines.length; i++) {
 				if (i == 0)
@@ -46,22 +50,22 @@ $(document).ready(function() {
 					var cells = lines[i].split(delim);
 					if (cells.length == 1 && cells[0] == '') continue;
 					if (i > 1)
-						output += ',\n\n';
+						output += indent +  ',\n\n';
 
 				    if (arrayIndices)
-				        output += '   ' +
+				        output += indent +  '   ' +
 				            ' // ' + String(i-1) + '\n';
 
-					output += '    new ' + className + '() {\n';
+					output += indent +  '    new ' + className + '() {\n';
 					for (var j=0; j < header.length; j++) {
 						var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
-						output += '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
+						output += indent +  '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
 					}
-					output += '    }';
+					output += indent +  '    }';
 				}
 			}
 	
-			output += '\n};\n';
+			output += indent +  '\n};\n';
 		}
 
 		$('#output').val(output);
@@ -76,7 +80,6 @@ $(document).ready(function() {
 textarea {
     width: 49%;
     display: inline-block;
-    height: 80vh;
 }
 
 body {
@@ -104,13 +107,23 @@ label {
 </head>
 <body>
 
-<textarea id="input"></textarea>
-<textarea id="output"></textarea>
+<textarea rows="35" id="input"></textarea>
+<textarea rows="35" id="output"></textarea>
 
 <div id="controls">
 	<p>
 		<label>Class Name</label>
 		<input id="className" type="text"></input>
+	</p>
+
+	<p>
+		<label>Array Variable Name</label>
+		<input id="arrVarName" type="text"></input>
+	</p>
+
+	<p>
+		<label># Spaces Indent</label>
+		<input id="indent" type="text" value="0"></input>
 	</p>
 
 	<p>
