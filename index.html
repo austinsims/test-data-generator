@@ -12,10 +12,18 @@ $(document).ready(function() {
 		    return !isNaN(d.valueOf());
 		}
 
-		if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
-		else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
-		else if ((data[0] == '"') && (data[data.length-1] == '"')) return data;
-		else return '"' + data + '"';
+		// No special formatting for JavaScript keywords
+ 		if (data == "null" || data == "true" || data == "false" || Number(data)) return data;
+
+		// Leave quoted strings alone
+		else if ( (data[0] == "\"" && data[data.length-1] == "\"") || (data[0] == "'" && data[data.length-1] == "'") ) return data;
+
+		// Try to detect dates and write them as C# conversion statements
+ 		else if (isDate(data)) return 'new DateTime("' + data + '")';
+
+		// Just wrap it up in quotes and hope it's supposed to be a string
+ 		else return '"' + data + '"';
+ 
 	}
 
 	function handle(e) {
@@ -50,7 +58,7 @@ $(document).ready(function() {
 					var cells = lines[i].split(delim);
 					if (cells.length == 1 && cells[0] == '') continue;
 					if (i > 1)
-						output += indent +  ',\n\n';
+						output += ',\n\n';
 
 				    if (arrayIndices)
 				        output += indent +  '   ' +
