@@ -21,8 +21,8 @@ $(document).ready(function() {
 		// Try to detect dates and write them as C# conversion statements
  		else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
 
-		// Just wrap it up in quotes and hope it's supposed to be a string
- 		else return '"' + data + '"';
+		// Just wrap it up in quotes, escpae backslashes and hope it's supposed to be a string
+ 		else return '"' + data.replace(/\\/, '\\\\') + '"';
  
 	}
 
