@@ -13,7 +13,7 @@ $(document).ready(function() {
 		}
 
 		// No special formatting for JavaScript keywords
- 		if (data == "null" || data == "true" || data == "false" || Number(data)) return data;
+ 		if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
 
 		// Leave quoted strings alone
 		else if ( (data[0] == "\"" && data[data.length-1] == "\"") || (data[0] == "'" && data[data.length-1] == "'") ) return data;
