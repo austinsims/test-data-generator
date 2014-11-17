@@ -1,9 +1,9 @@
 <!doctype html>
 
 <head>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 </head>
 
 <body>
@@ -14,41 +14,37 @@
         <div class="column">
             <p>
                     <label>Class Name</label>
-                    <input id="className" type="text"></input>
+                    <input data-bind="value: className" type="text"></input>
             </p>
 
             <p>
                     <label>Array Variable Name</label>
-                    <input id="arrVarName" type="text"></input>
+                    <input data-bind="value: arrVarName" type="text"></input>
             </p>
 
             <p>
                     <label># Spaces Indent</label>
-                    <input id="indent" type="text" value="0"></input>
+                    <input data-bind="value: indent" type="text"></input>
             </p>
         </div>
         <div class="column">
 
             <p>
                     <label>Declaration type:</label>
-
-                    <input type="radio" name="declaration" value="var" checked>
-                    Local variable
+                    <input type="radio" name="declaration"
+                           value="private readonly field" data-bind="checked: declaration">
+                    Private readonly field
             </p>
             <p>
                     <label>&nbsp;</label>
-                    <input type="radio" name="declaration" value="field">
-                    Private readonly field
-            </p>
-
-            <p>
-                <label>Add comments with array indices:</label>
-                <input type="checkbox" name="arrayIndices"/>
+                    <input type="radio" name="declaration" value="var"
+                           data-bind="checked: declaration">
+                    Local variable
             </p>
 
             <p>
                 <label>Field delimeter:</label>
-                <select id="delim">
+                <select id="delim" data-bind="value: delim">
                         <option value=",">Comma</option>
                         <option value="	">Tab</option>
                 </select>
@@ -57,10 +53,12 @@
     </div>
 
     <div class="textareas">
-        <textarea class="input"></textarea>
-        <textarea class="output"></textarea>
+        <textarea class="input" data-bind="value: input, valueUpdate: 'keyup'"></textarea>
+        <textarea class="output" data-bind="value: output"></textarea>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+    <script src="index.js"></script>
 </body>
 
       
