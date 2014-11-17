@@ -4,121 +4,154 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
 <script>
-$(document).ready(function() {
-	
-	function format(data) {
-		function isDate(val) {
-		    var d = new Date(val);
-		    return !isNaN(d.valueOf());
-		}
+    $(document).ready(function() {
 
-		// No special formatting for JavaScript keywords
- 		if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
+        function format(data) {
+                function isDate(val) {
+                    var d = new Date(val);
+                    return !isNaN(d.valueOf());
+                }
 
-		// Leave quoted strings alone
-		else if ( (data[0] == "\"" && data[data.length-1] == "\"") || (data[0] == "'" && data[data.length-1] == "'") ) return data;
+                // No special formatting for JavaScript keywords
+                if (data == "null" || data == "true" || data == "false" || !isNaN(Number(data))) return data;
 
-		// Try to detect dates and write them as C# conversion statements
- 		else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
+                // Leave quoted strings alone
+                else if ( (data[0] == "\"" && data[data.length-1] == "\"") || (data[0] == "'" && data[data.length-1] == "'") ) return data;
 
-		// Just wrap it up in quotes, escpae backslashes and hope it's supposed to be a string
- 		else return '"' + data.replace(/\\/, '\\\\') + '"';
- 
-	}
+                // Try to detect dates and write them as C# conversion statements
+                else if (isDate(data)) return 'Convert.ToDateTime("' + data + '")';
 
-	function handle(e) {
-		var delim = $("#delim").val();
-		var className = $("#className").val();
-		var arrVarName = $("#arrVarName").val() || ('sample' + className + 's');
-		var indentNum = Number($("#indent").val()) || 0;
-		var indent = '';
-		for (var i=0; i<indentNum; i++) indent += ' ';
+                // Just wrap it up in quotes, escpae backslashes and hope it's supposed to be a string
+                else return '"' + data.replace(/\\/, '\\\\') + '"';
 
-		var output = '';
+        }
 
-		if (!className)
-			output = 'Please fill out class name below'	
-		else {
-			var declaration = null;
-			var radioValue = $("input:radio[name='declaration']:checked").val();
-			if (radioValue == 'var') declaration = 'var';
-			else if (radioValue == 'field') declaration = 'private readonly ' + className + '[]';
+            function handle(e) {
+                    var delim = $("#delim").val();
+                    var className = $("#className").val();
+                    var arrVarName = $("#arrVarName").val() || ('sample' + className + 's');
+                    var indentNum = Number($("#indent").val()) || 0;
+                    var indent = '';
+                    for (var i=0; i<indentNum; i++) indent += ' ';
 
-		    var arrayIndices = $("input:checkbox[name='arrayIndices']").is(':checked');
+                    var output = '';
 
-			var lines = $('#input').val().split('\n');
-			var header = null;
-	
-			output += indent +  declaration + ' ' + arrVarName + ' = new[] {\n';
-	
-			for (var i = 0; i < lines.length; i++) {
-				if (i == 0)
-					header = lines[i].split(delim);
-				else {
-					var cells = lines[i].split(delim);
-					if (cells.length == 1 && cells[0] == '') continue;
-					if (i > 1)
-						output += ',\n\n';
+                    if (!className)
+                            output = 'Please fill out class name above'
+                    else {
+                            var declaration = null;
+                            var radioValue = $("input:radio[name='declaration']:checked").val();
+                            if (radioValue == 'var') declaration = 'var';
+                            else if (radioValue == 'field') declaration = 'private readonly ' + className + '[]';
 
-				    if (arrayIndices)
-				        output += indent +  '   ' +
-				            ' // ' + String(i-1) + '\n';
+                            var arrayIndices = $("input:checkbox[name='arrayIndices']").is(':checked');
 
-					output += indent +  '    new ' + className + '() {\n';
-					for (var j=0; j < header.length; j++) {
-						var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
-						output += indent +  '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
-					}
-					output += indent +  '    }';
-				}
-			}
-	
-			output += '\n' + indent + '};\n';
-		}
+                            var lines = $('textarea.input').val().split('\n');
+                            var header = null;
 
-		$('#output').val(output);
-	}
+                            output += indent +  declaration + ' ' + arrVarName + ' = new[] {\n';
 
-	$('textarea, input, :radio, select').on('input propertychange click', handle);
-	$('#output').on('click', function(e) { $(e.target).select(); });
-});
+                            for (var i = 0; i < lines.length; i++) {
+                                    if (i == 0)
+                                            header = lines[i].split(delim);
+                                    else {
+                                            var cells = lines[i].split(delim);
+                                            if (cells.length == 1 && cells[0] == '') continue;
+                                            if (i > 1)
+                                                    output += ',\n\n';
+
+                                        if (arrayIndices)
+                                            output += indent +  '   ' +
+                                                ' // ' + String(i-1) + '\n';
+
+                                            output += indent +  '    new ' + className + '() {\n';
+                                            for (var j=0; j < header.length; j++) {
+                                                    var value = (typeof cells[j] == 'undefined' || cells[j] == '' ? 'null' : format(cells[j]));
+                                                    output += indent +  '        ' + header[j].trim() + ' = ' + value.trim() + (j == header.length-1 ? '' : ',') + '\n';
+                                            }
+                                            output += indent +  '    }';
+                                    }
+                            }
+
+                            output += '\n' + indent + '};\n';
+                    }
+
+                    $('textarea.output').val(output);
+            }
+
+            $('textarea, input, :radio, select').on('input propertychange click', handle);
+            $('textarea.output').on('click', function(e) { $(e.target).select(); });
+    });
 </script>
 
 <style>
-textarea {
-    width: 49%;
-    display: inline-block;
+h1 {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+html {
+    height: 100%;
+    width: 100%;
 }
 
 body {
+    display: table;
     height: 100%;
+    width: 100%;
+    margin: 0px;
 }
 
-#input {
+div.column {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+div.controls {
+    display: table-row;
+    height: 0;
+    width: 100%;
+}
+
+div.textareas {
+    display: table-row;
+    width: 100%;
+}
+
+textarea {
+    width: 49%;
+    height: 100%;
+    display: inline-block;
+}
+
+textarea.input {
     float:left;
 }
 
-#output {
+textarea.output {
     float:right;
 }
 
-input {
-	display: inline-block;
-	clear: right;
+label {
+    display: inline-block;
+    width: 250px;
+    text-align: right;
+    padding-right: 1em;
 }
 
-label {
-	display: inline-block;
-	clear: left;
+input[type='text'] {
+    width: 180px;
 }
+
 </style>
 </head>
 <body>
-
-<textarea rows="35" id="input"></textarea>
-<textarea rows="35" id="output"></textarea>
-
-<div id="controls">
+<div class="controls">
+  <h1>Test Data Generator</h1>
+</div>
+<div class="controls">
+    <div class="column">
 	<p>
 		<label>Class Name</label>
 		<input id="className" type="text"></input>
@@ -133,29 +166,40 @@ label {
 		<label># Spaces Indent</label>
 		<input id="indent" type="text" value="0"></input>
 	</p>
+    </div>
+    <div class="column">
 
 	<p>
-		Declaration type:
+                <label>Declaration type:</label>
+
 		<input type="radio" name="declaration" value="var" checked>
-		<label>Local variable</label>
+		Local variable
+        </p>
+        <p>
+                <label>&nbsp;</label>
 		<input type="radio" name="declaration" value="field">
-		<label>Private readonly field</label>
+		Private readonly field
 	</p>
     
-    <p>
-        Add comments with array indices:
-        <input type="checkbox" name="arrayIndices"/>
-    </p>
+        <p>
+            <label>Add comments with array indices:</label>
+            <input type="checkbox" name="arrayIndices"/>
+        </p>
 
-    <p>
-    	Field delimeter:
-	<select id="delim">
-		<option value=",">Comma</option>
-		<option value="	">Tab</option>
-	</select>
-    </p>
+        <p>
+            <label>Field delimeter:</label>
+            <select id="delim">
+                    <option value=",">Comma</option>
+                    <option value="	">Tab</option>
+            </select>
+        </p>
+    </div>
 </div>
 
+<div class="textareas">
+    <textarea class="input"></textarea>
+    <textarea class="output"></textarea>
+</div>
 
 </body>
 
