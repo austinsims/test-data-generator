@@ -1,0 +1,59 @@
+
+h1 {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: table;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+
+div.column {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+div.controls {
+    display: table-row;
+    height: 0;
+    width: 100%;
+}
+
+div.textareas {
+    display: table-row;
+    width: 100%;
+}
+
+textarea {
+    width: 49%;
+    height: 100%;
+    display: inline-block;
+}
+
+textarea.input {
+    float:left;
+}
+
+textarea.output {
+    float:right;
+}
+
+label {
+    display: inline-block;
+    width: 250px;
+    text-align: right;
+    padding-right: 1em;
+}
+
+input[type='text'] {
+    width: 180px;
+}
