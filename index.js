@@ -29,7 +29,7 @@ function TestDataGenerator() {
     self.className = ko.observable('');
     self.arrVarName = ko.observable();
     self.indent = ko.observable(0);
-    self.declaration = ko.observable('private readonly field');
+    self.declaration = ko.observable('var');
     self.delim = ko.observable(',');
     
     self.input = ko.observable('');

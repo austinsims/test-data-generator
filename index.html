@@ -32,7 +32,7 @@
             <p>
                     <label>Declaration type:</label>
                     <input type="radio" name="declaration"
-                           value="private readonly field" data-bind="checked: declaration">
+                           data-bind="checked: declaration, value: 'private readonly ' + className() + '[]'">
                     Private readonly field
             </p>
             <p>
