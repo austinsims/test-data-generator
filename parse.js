@@ -119,8 +119,12 @@ function Parser() {
       // eat dinner
       tokens.eatString('};');
 
-      // puke everything up
-      return JSON.stringify(body);
+      // puke everything up in csv form
+      return header.join(',') + '\n' +
+      _.map(body, function(row) {
+          return _.map(header, function(colName) { return row[colName]; }).join(',');
+      }).join('\n');
+
   } catch (e) {
     return e.message;
   }
