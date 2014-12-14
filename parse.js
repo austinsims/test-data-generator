@@ -1,5 +1,36 @@
 var debug = true;
 
+var csharpDateUnformat = (function(){
+    var pattern = /Convert\.ToDateTime\("([^"]*)"\)/;
+    return function (value) {
+        var ret = pattern.exec(value)
+        // If pattern matches, return the value of the first match group
+        return ret ? ret.slice(1,2) : null;
+    }
+})();
+
+var singleQuotedStringPattern = /^'[^'*]'$/;
+var doubleQuotedStringPattern = /^"[^"*]"$/;
+
+// This is analogous to the format function in the test data generator
+// It unformats the generated csharp code into generally human-readable values
+function unformat(value) {
+    if (!value)
+        return 'null';
+    else if (singleQuotedStringPattern.test(value))
+        return value.replace(/'/g, '');
+    else if (doubleQuotedStringPattern.test(value))
+        return value.replace(/"/g, '');
+    else if (value === 'true' || value === 'false')
+        return value;
+    else if (!isNaN(Number(value)))
+        return value;
+    else {
+        var date = csharpDateUnformat(value);
+        if (date) return date;
+        else return value; // let's hope everything is alright and just return it as-is
+    }
+}
 
 function tokenize(s) {
   return _.filter(s
@@ -107,8 +138,7 @@ function Parser() {
           // the order of the first instance determines the order for the csv
           if (!header[i])
             header[i] = key;
-          // TODO: write fromValue(v) func to handle Convert.ToDateTime, etc.
-          row[key] = value;
+          row[key] = unformat(value);
           i++;
         }
         tokens.eatString('}');
