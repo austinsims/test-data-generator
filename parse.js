@@ -5,7 +5,7 @@ function tokenize(s) {
   return _.filter(s
     .replace(/\n/g, ' ')
     // TODO: why isn't this replacing all the commas... le sigh
-    .replace(',', ' , ')
+    .replace(/,/g, ' , ')
     .split(/\s/),
     function(s) { return s != ''; });
 }
@@ -110,16 +110,17 @@ function Parser() {
           // TODO: write fromValue(v) func to handle Convert.ToDateTime, etc.
           row[key] = value;
           i++;
-          body.push(row);
         }
         tokens.eatString('}');
+        if (tokens.peekString() == ',') tokens.eatString(',');
+        body.push(row);
       }
 
       // eat dinner
       tokens.eatString('};');
 
       // puke everything up
-      self.input(JSON.stringify(body));
+      return JSON.stringify(body);
   } catch (e) {
     return e.message;
   }
