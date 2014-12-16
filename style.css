@@ -1,6 +1,5 @@
 
 h1 {
-    font-family: sans-serif;
     text-align: center;
 }
 
@@ -9,11 +8,28 @@ html {
     width: 100%;
 }
 
+* {
+    font-family: 'Source Code Pro';
+}
+
 body {
     display: table;
     height: 100%;
     width: 100%;
     margin: 0px;
+    background-color: #242424;
+    color: #85FF0C;
+}
+
+div.help {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1em;
+    width: 80%;
+    height: 6em;
+    border: 1px solid white;
 }
 
 div.column {
@@ -37,6 +53,11 @@ textarea {
     width: 49%;
     height: 100%;
     display: inline-block;
+}
+
+input, textarea, select {
+    background-color: #727272;
+    color: #ffffff;
 }
 
 textarea.input {
