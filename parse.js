@@ -35,7 +35,6 @@ function unformat(value) {
 function tokenize(s) {
   return _.filter(s
     .replace(/\n/g, ' ')
-    // TODO: why isn't this replacing all the commas... le sigh
     .replace(/,/g, ' , ')
     .split(/\s/),
     function(s) { return s != ''; });
@@ -150,9 +149,10 @@ function Parser() {
       tokens.eatString('};');
 
       // puke everything up in csv form
-      return header.join(',') + '\n' +
+      var delim = self.delim();
+      return header.join(delim) + '\n' +
       _.map(body, function(row) {
-          return _.map(header, function(colName) { return row[colName]; }).join(',');
+          return _.map(header, function(colName) { return row[colName]; }).join(delim);
       }).join('\n');
 
   } catch (e) {
