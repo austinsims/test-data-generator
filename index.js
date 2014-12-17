@@ -19,7 +19,7 @@ function format(value) {
 
   // If none of the above special cases are met... just wrap it
   // up in quotes, escape backslashes and hope it's supposed to be a string
-  else return '"' + value.replace(/\\/, '\\\\') + '"';
+  else return '"' + value.replace(/\\/g, '\\\\') + '"';
 }
 
 function TestDataGenerator() {
