@@ -7,7 +7,9 @@ function format(value) {
   if (value == '') return 'null';
 
   // No special formatting for boolean literal values or numbers.
-  else if (value == "null" || value == "true" || value == "false" || !isNaN(Number(value))) return value;
+  else if (value == "null"  || value == "NULL") return "null";
+
+  else if (value == "true" || value == "false" || !isNaN(Number(value))) return value;
 
   // Leave already-quoted strings alone.
   else if (
