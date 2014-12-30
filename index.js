@@ -27,6 +27,9 @@ function format(value) {
 function TestDataGenerator() {
   var self = this;
     Base.call(this);
+
+    self.transform = ko.observable();
+
     self.input = ko.observable('');
 
     self.output = ko.computed(function() {
@@ -36,8 +39,23 @@ function TestDataGenerator() {
 
         var lines = self.input().split('\n');
         var header = lines[0].split(self.delim());
-        var body = lines.slice(1);
 
+        // Apply transformation to header if specified and valid
+        var transform;
+        if (self.transform()) {
+            try {
+                transform = JSON.parse(self.transform());
+            } catch (ex) {
+                //whatever
+            }
+        }
+        if (transform) {
+            header = _.map(header, function(propName) {
+                return transform[propName] || propName;
+            });
+        }
+
+        var body = lines.slice(1);
         var objectList = _.chain(body)
             // Do not try to make objects out of empty lines.
             .filter(function(line) {
