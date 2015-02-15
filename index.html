@@ -37,17 +37,13 @@
 
             <p>
                     <label>Declaration type:</label>
-                    <input type="radio" name="declaration"
+                    <input type="radio" id="declaration-private" name="declaration"
                            data-bind="checked: declaration, value: 'private readonly ' + className() + '[]'">
-                    Private readonly field
-            </p>
-            <p>
-                    <label>&nbsp;</label>
-                    <input type="radio" name="declaration" value="var"
+                    <label for="declaration-private" class="radio-label-button">Private readonly field</label>
+                    <input type="radio" id="declaration-local" name="declaration" value="var"
                            data-bind="checked: declaration">
-                    Local variable
+                    <label for="declaration-local" class="radio-label-button">Local variable</label>
             </p>
-
             <p>
                 <label>Field delimeter:</label>
                 <select id="delim" data-bind="value: delim">
